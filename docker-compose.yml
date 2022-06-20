@@ -1,0 +1,33 @@
+version: "3.8"
+
+networks:
+  pr:
+    name: pr_prod
+    driver: bridge
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/app
+    restart: always
+    env_file:
+      - ./.env
+    networks:
+      - pr
+
+  mongodb:
+    container_name: mongo
+    hostname: mongodb
+    image: mongo:latest
+    restart: always
+    ports:
+      - 27017:27017
+    networks:
+      - pr
+    
